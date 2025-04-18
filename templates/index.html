@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-100">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MCP Assistant</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="h-full flex items-center justify-center">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl space-y-6">
+    <h1 class="text-2xl font-bold text-gray-800">🧠 Schedule a Meeting with AI</h1>
+
+    <form method="POST" action="/submit" class="space-y-4">
+      <label class="block">
+        <span class="text-gray-700 font-medium">Prompt</span>
+        <textarea
+          name="prompt"
+          rows="5"
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500"
+          placeholder="e.g. Schedule a 30-minute sync with jamie@company.com next Tuesday at 2pm."
+          required
+        >{{ prompt or '' }}</textarea>
+      </label>
+      <button
+        type="submit"
+        class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition duration-200"
+      >
+        Submit
+      </button>
+    </form>
+
+    {% if output %}
+    <div class="mt-6 border-t pt-4">
+      <h2 class="font-semibold text-gray-800 mb-2">Assistant Response:</h2>
+      <pre class="bg-gray-100 p-4 rounded text-sm text-gray-700 whitespace-pre-wrap">{{ output }}</pre>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>
