@@ -29,7 +29,7 @@ def create_event(subject: str, attendees: list[str], start_time: str, duration: 
             start_dt = pytz.timezone("America/New_York").localize(start_dt)
         start_dt_utc = start_dt.astimezone(pytz.utc)
     except Exception as e:
-        return f"❌ Failed to parse date/time: {e}"
+        return f"Failed to parse date/time: {e}"
 
     end_dt_utc = start_dt_utc + timedelta(minutes=duration)
 
@@ -56,10 +56,10 @@ def create_event(subject: str, attendees: list[str], start_time: str, duration: 
     )
 
     if res.status_code == 201:
-        return "📅 Meeting successfully scheduled."
+        return "Meeting successfully scheduled."
     else:
         print("[error]", res.status_code, res.text)
-        return "❌ Failed to schedule meeting."
+        return "Failed to schedule meeting."
 
 if __name__ == "__main__":
     import asyncio
