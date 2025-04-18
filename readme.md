@@ -21,7 +21,7 @@ Create a `.env` file in the root directory with the following variables:
 AZURE_OPENAI_API_KEY=your_azure_openai_api_key
 AZURE_OPENAI_ENDPOINT=https://your-resource-name.openai.azure.com/
 AZURE_OPENAI_DEPLOYMENT_NAME=your_deployment_name
-AZURE_OPENAI_API_VERSION=2023-12-01-preview
+AZURE_OPENAI_API_VERSION=your_api_version
 
 # Microsoft Graph API Configuration
 GRAPH_TENANT_ID=your_tenant_id
