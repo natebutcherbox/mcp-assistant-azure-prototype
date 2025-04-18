@@ -18,7 +18,7 @@ fastmcp run graph_server.py
 
 ### Start the Filesystem MCP Server:
 npx -y @modelcontextprotocol/server-filesystem ~/mcp_files
-Servers: https://github.com/modelcontextprotocol/servers/tree/main
+<br>Servers: https://github.com/modelcontextprotocol/servers/tree/main
 
 ### Run the Assistant
 MCP_PROMPT="Create a 30-minute meeting with [emails] today at 1pm and name the meeting Quick Sync.
