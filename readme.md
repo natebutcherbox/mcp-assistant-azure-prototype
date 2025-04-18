@@ -22,6 +22,6 @@ npx -y @modelcontextprotocol/server-filesystem ~/mcp_files
 
 ### Run the Assistant
 MCP_PROMPT="Create a 30-minute meeting with [emails] today at 1pm and name the meeting Quick Sync.
-Then write a file called summary.txt that says: Meeting was created successfully."  python main.py
+<br>Then write a file called summary.txt that says: Meeting was created successfully."  python main.py
 
 Note: Make sure to use a file path that's within the allowed directory (~/mcp_files).
