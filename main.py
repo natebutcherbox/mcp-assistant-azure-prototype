@@ -35,10 +35,7 @@ async def main():
     print("🚀 Starting MCP tool servers...")
 
     graph_process = subprocess.Popen(["python", "graph_server.py", "--port", "8001"])
-    filesystem_process = subprocess.Popen([
-        "npx", "-y", "@modelcontextprotocol/server-filesystem",
-        os.path.expanduser("~/mcp_files")
-    ])
+    data_process = subprocess.Popen(["python", "data_server.py", "--port", "8002"])
 
     try:
         time.sleep(3)  # Let both MCP servers spin up
@@ -50,15 +47,13 @@ async def main():
             params={"url": "http://localhost:8001/sse"}
         )
 
-        filesystem_mcp = MCPServerStdio(
-            name="Filesystem",
-            params={
-                "command": "npx",
-                "args": ["-y", "@modelcontextprotocol/server-filesystem", os.path.expanduser("~/mcp_files")]
-            }
+        data_mcp = MCPServerSse(
+            name="System Data Server",
+            params={"url": "http://localhost:8002/sse"}
         )
 
-        async with graph_mcp, filesystem_mcp:
+
+        async with graph_mcp, data_mcp:
             with trace(workflow_name="Graph + Filesystem Agent", trace_id=trace_id):
                 user_prompt = os.environ.get("MCP_PROMPT", "Schedule a meeting")
 
@@ -69,9 +64,9 @@ async def main():
                 print(f"\n🧠 Prompt: {prompt}\n")
 
                 agent = Agent(
-                    name="Graph + File Assistant",
-                    instructions="You are a smart assistant that can both schedule meetings and read/write files.",
-                    mcp_servers=[graph_mcp, filesystem_mcp],
+                    name="Graph + Data Assistant",
+                    instructions="You are a smart assistant that can schedule meetings and provide system information.",
+                    mcp_servers=[graph_mcp, data_mcp],
                     model_settings=ModelSettings(),
                     model=AZURE_OPENAI_DEPLOYMENT_NAME
                 )
@@ -84,8 +79,8 @@ async def main():
     finally:
         if graph_process:
             graph_process.terminate()
-        if filesystem_process:
-            filesystem_process.terminate()
+        if data_process:
+            data_process.terminate()
 
 
 if __name__ == "__main__":
