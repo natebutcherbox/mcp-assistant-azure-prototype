@@ -108,8 +108,18 @@ async def async_chat_with_agent(message):
         async with graph_mcp, data_mcp:
             with trace(workflow_name="Graph + Filesystem Agent", trace_id=trace_id):
                 agent = Agent(
-                    name="Graph + Data Assistant",
-                    instructions="You are a smart assistant that can schedule meetings and provide system information.",
+                    name="ButcherBox Assistant",
+                    instructions="""You are a smart assistant for ButcherBox that can:
+                    1. Schedule meetings and access calendar information
+                    3. Look up company acronyms and their definitions
+                    
+                    When asked about acronyms, use the data_mcp tools to look them up.
+                    If users ask for the meaning of acronyms, you should look them up
+                    and provide the definition. You can also list all available acronyms
+                    if asked.
+                    
+                    Always be helpful, concise, and professional in your responses.
+                    """,
                     mcp_servers=[graph_mcp, data_mcp],
                     model_settings=ModelSettings(),
                     model=AZURE_OPENAI_DEPLOYMENT_NAME
@@ -130,16 +140,20 @@ def create_gradio_interface():
         chat_interface = gr.ChatInterface(
             fn=chat_with_agent,
             type="messages",
-            title="MCP Assistant",
-            description="I can schedule meetings and provide system information",
-            examples=["Schedule a meeting with John tomorrow", 
-                     "What's the current system status?",
-                     "Show me my calendar for next week"],
+            title="ButcherBox Assistant",
+            description="I can schedule meetings and look up company acronyms",
+            examples=[
+                "Schedule a meeting with the team tomorrow", 
+                "Show me my calendar for next week",
+                "What does AOV mean?",
+            ],
             cache_examples=False,  # Disable caching to avoid async issues
             chatbot=gr.Chatbot(height=500, type="messages"),  # Explicitly set type here
-            textbox=gr.Textbox(placeholder="Ask me to schedule a meeting or check system info...", 
-                              container=False, 
-                              scale=7)
+            textbox=gr.Textbox(
+                placeholder="Ask me about meetings or company acronyms...", 
+                container=False, 
+                scale=7
+            )
         )
         
         # Return the interface for launching
